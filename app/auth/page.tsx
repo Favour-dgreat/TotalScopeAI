@@ -8,23 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Wallet, Mail, ArrowLeft } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
-import { initializeApp } from "firebase/app"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA_cJA4pV5wnOTbByj6tooCnl7CazaQhAQ",
-  authDomain: "team-project-b50a9.firebaseapp.com",
-  projectId: "team-project-b50a9",
-  storageBucket: "team-project-b50a9.firebasestorage.app",
-  messagingSenderId: "260770492334",
-  appId: "1:260770492334:web:7652af366d8a31d51a223f",
-  measurementId: "G-5P820DQ617"
-}
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
+import { auth } from '@/lib/firebase' // Updated import
+import { signInWithEmailAndPassword } from "firebase/auth"
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false)
