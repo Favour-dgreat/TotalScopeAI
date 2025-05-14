@@ -69,19 +69,19 @@ function generatePrompt(
 ): string {
   switch (contentType) {
     case 'tweet':
-      return `Generate 5 engaging and unique tweets about ${tokenName} ($${tokenSymbol}) which is in the ${niche} space. Include relevant hashtags and make them sound authentic, not promotional. Each tweet should be under 280 characters. Format each tweet on a new line starting with "Tweet: "`;
-
+      return `Generate 5 engaging and unique tweets about ${tokenName} ($${tokenSymbol}) which is in the ${niche} space. Include relevant hashtags and make them sound authentic, not promotional. Each tweet should be under 280 characters.`
+    
     case 'announcement':
-      return `Create 3 professional community announcements for ${tokenName} ($${tokenSymbol}) in the ${niche} niche that could be posted on Discord or Telegram. Include emoji where appropriate and format them to be easily readable. Format each announcement starting with "Announcement: "`;
-
-    case 'meme':
-      return `Describe 3 crypto memes for ${tokenName} ($${tokenSymbol}) in the ${niche} sector. Each description should explain what the meme would look like visually, using popular crypto meme formats and templates. Be creative and humorous. Format each meme description starting with "Meme: "`;
-
+      return `Create 3 professional community announcements for ${tokenName} ($${tokenSymbol}) in the ${niche} niche that could be posted on Discord or Telegram. Include emoji where appropriate and format them to be easily readable.`
+    
+    case 'narrative':
+      return `Create 3 compelling crypto narratives for ${tokenName} ($${tokenSymbol}) in the ${niche} sector. Each narrative should be a short, engaging story that positions the project within current market trends and technological developments. Focus on unique value propositions and potential market impact. Include relevant industry context and market dynamics.`
+    
     case 'hashtag':
-      return `Generate 3 sets of trending hashtags that would be relevant for ${tokenName} ($${tokenSymbol}) in the ${niche} space. Include both specific and general crypto/web3 hashtags to maximize reach. Each set should have 8-10 hashtags. Format each set starting with "Hashtags: "`;
-
+      return `Generate 3 sets of trending hashtags that would be relevant for ${tokenName} ($${tokenSymbol}) in the ${niche} space. Include both specific and general crypto/web3 hashtags to maximize reach. Each set should have 8-10 hashtags.`
+    
     default:
-      return `Generate content about ${tokenName} ($${tokenSymbol}) in the ${niche} space.`;
+      return `Generate content about ${tokenName} ($${tokenSymbol}) in the ${niche} space.`
   }
 }
 
@@ -90,15 +90,12 @@ function parseResponse(response: string, contentType: ContentType) {
   const items: any[] = [];
 
   lines.forEach((line, index) => {
-    const content = line.replace(/^(Tweet|Announcement|Meme|Hashtags):\s*/, '').trim();
+    const content = line.replace(/^(Tweet|Announcement|Narrative|Hashtags):\s*/, '').trim();
     if (content) {
       items.push({
         id: (index + 1).toString(),
         type: contentType,
-        content,
-        ...(contentType === 'meme' && {
-          imageUrl: `https://images.pexels.com/photos/${5980866 + index}/pexels-photo-${5980866 + index}.jpeg?auto=compress&cs=tinysrgb&w=600`
-        })
+        content: content,
       });
     }
   });

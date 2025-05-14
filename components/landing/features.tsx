@@ -1,7 +1,7 @@
 import { 
   Twitter, 
   MessageSquare, 
-  Image, 
+  Lightbulb, 
   Hash, 
   PanelTop, 
   Cpu, 
@@ -11,18 +11,18 @@ import {
 
 export function LandingFeatures() {
   return (
-    <section className="justify-center items-center flex py-20 bg-muted/30">
+    <section className="py-20 flex justify-center items-center bg-muted/30">
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
             AI-Powered Content Creation
           </h2>
           <p className="mt-4 text-xl text-muted-foreground max-w-3xl mx-auto">
-            Generate engaging web3 content with cutting-edge AI technology
+            Generate engaging crypto content with cutting-edge AI technology
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-8">
           <FeatureCard
             icon={<Twitter className="h-10 w-10 text-blue-500" />}
             title="Tweet & Thread Generator"
@@ -36,9 +36,9 @@ export function LandingFeatures() {
           />
           
           <FeatureCard
-            icon={<Image className="h-10 w-10 text-pink-500" />}
-            title="Meme Generator"
-            description="Create viral crypto memes with AI using trending formats and your token's branding"
+            icon={<Lightbulb className="h-10 w-10 text-yellow-500" />}
+            title="Narrative Generator"
+            description="Create compelling crypto narratives that position your project within current market trends"
           />
           
           <FeatureCard

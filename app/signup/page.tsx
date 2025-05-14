@@ -8,8 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Wallet, Mail, ArrowLeft } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
-// Removed import and directly initialized Firebase
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth"
 import { getApps as firebaseGetApps, initializeApp } from "firebase/app";
 
 // Firebase configuration
@@ -41,11 +40,18 @@ export default function SignUp() {
     setIsLoading(true)
 
     const form = e.target as HTMLFormElement
+    const username = (form.elements.namedItem("text") as HTMLInputElement).value
     const email = (form.elements.namedItem("email") as HTMLInputElement).value
     const password = (form.elements.namedItem("password") as HTMLInputElement).value
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user
+
+      // Update the user's displayName with the username
+      await updateProfile(user, { displayName: username })
+
       toast({
         title: "Account Created Successfully",
         description: "Redirecting to dashboard...",
@@ -95,8 +101,6 @@ export default function SignUp() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="email" className="w-full">
-              
-              
               <TabsContent value="email">
                 <form onSubmit={handleEmailSignUp} className="space-y-4">
                   <div className="space-y-2">

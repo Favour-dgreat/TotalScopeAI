@@ -20,10 +20,39 @@ import {
   Menu,
   X
 } from 'lucide-react'
+import { auth } from '@/lib/firebase' // Import Firebase Auth
+import { onAuthStateChanged, signOut } from 'firebase/auth' // Import required Firebase methods
+import { useRouter } from 'next/navigation' // For navigation after logout
 
 export function DashboardHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  
+  const [username, setUsername] = useState<string | null>(null)
+  const router = useRouter()
+
+  // Fetch the logged-in user's username
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Set the username (use displayName or email as fallback)
+        setUsername(user.displayName || user.email || "User")
+      } else {
+        setUsername(null)
+      }
+    })
+
+    return () => unsubscribe() // Cleanup the listener on unmount
+  }, [])
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await signOut(auth) // Sign out the user
+      router.push('/') // Redirect to the landing page
+    } catch (error) {
+      console.error("Error logging out:", error)
+    }
+  }
+
   return (
     <header className="border-b">
       <div className="container flex h-16 items-center justify-between px-6">
@@ -63,7 +92,7 @@ export function DashboardHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{username || "My Account"}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/profile" className="flex items-center gap-2 cursor-pointer">
@@ -78,11 +107,9 @@ export function DashboardHeader() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/" className="flex items-center gap-2 cursor-pointer text-destructive">
-                  <LogOut className="h-4 w-4" />
-                  Log out
-                </Link>
+              <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 cursor-pointer text-destructive">
+                <LogOut className="h-4 w-4" />
+                Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -8,7 +8,6 @@ import { ContentType, GeneratedItem } from '@/lib/types'
 import { 
   Sparkles, 
   Copy, 
-  Download, 
   Bookmark, 
   BookmarkCheck,
   Loader2,
@@ -17,7 +16,6 @@ import {
   ThumbsDown
 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
-import Image from 'next/image'
 
 interface GeneratedContentProps {
   items: GeneratedItem[]
@@ -84,8 +82,8 @@ export function GeneratedContent({ items, isLoading }: GeneratedContentProps) {
               <TabsTrigger value="announcement" disabled={getContentTypeItems('announcement').length === 0}>
                 Posts
               </TabsTrigger>
-              <TabsTrigger value="meme" disabled={getContentTypeItems('meme').length === 0}>
-                Memes
+              <TabsTrigger value="narrative" disabled={getContentTypeItems('narrative').length === 0}>
+                Narratives
               </TabsTrigger>
               <TabsTrigger value="hashtag" disabled={getContentTypeItems('hashtag').length === 0}>
                 Hashtags
@@ -116,8 +114,8 @@ export function GeneratedContent({ items, isLoading }: GeneratedContentProps) {
               ))}
             </TabsContent>
             
-            <TabsContent value="meme" className="space-y-4">
-              {getContentTypeItems('meme').map((item) => (
+            <TabsContent value="narrative" className="space-y-4">
+              {getContentTypeItems('narrative').map((item) => (
                 <ContentCard 
                   key={item.id}
                   item={item}
@@ -166,17 +164,6 @@ interface ContentCardProps {
 function ContentCard({ item, isSaved, onCopy, onSave }: ContentCardProps) {
   return (
     <div className="border rounded-lg p-4 bg-card/50">
-      {item.type === 'meme' && item.imageUrl && (
-        <div className="mb-4 relative h-52 w-full rounded-md overflow-hidden">
-          <Image 
-            src={item.imageUrl} 
-            alt="Generated meme" 
-            className="object-cover"
-            fill
-          />
-        </div>
-      )}
-      
       <p className="whitespace-pre-line mb-4">{item.content}</p>
       
       <div className="flex items-center justify-between mt-2">
@@ -185,12 +172,6 @@ function ContentCard({ item, isSaved, onCopy, onSave }: ContentCardProps) {
             <Copy className="h-4 w-4 mr-2" />
             Copy
           </Button>
-          {item.type === 'meme' && (
-            <Button variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-2" />
-              Download
-            </Button>
-          )}
         </div>
         
         <div className="flex items-center gap-2">

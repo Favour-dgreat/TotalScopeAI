@@ -10,7 +10,7 @@ import {
   Settings,
   History,
   Star,
-  ImageIcon,
+  Lightbulb,
   Twitter,
   Hash
 } from 'lucide-react'
@@ -37,9 +37,9 @@ const items = [
         icon: MessageCircle,
       },
       {
-        title: "Memes",
-        href: "/dashboard/content/memes",
-        icon: ImageIcon,
+        title: "Narratives",
+        href: "/dashboard/content/narratives",
+        icon: Lightbulb,
       },
       {
         title: "Hashtags",
@@ -77,16 +77,16 @@ export function DashboardNav() {
     <nav className="hidden md:block w-64 border-r bg-muted/20 p-6">
       <div className="space-y-4">
         <div className="py-2">
-          <h4 className="mb-5 text-sm font-medium leading-none text-muted-foreground">
+          <h4 className="mb-1 text-sm font-medium leading-none text-muted-foreground">
             Content Creation
           </h4>
-          <div className="space-y-10 pt-2">
+          <div className="space-y-1 pt-2">
             {items.map((item) => (
               <div key={item.href}>
                 <Link href={item.href}>
                   <span
                     className={cn(
-                      "group flex items-center rounded-md px-3 py-2 text-m font-medium hover:bg-accent hover:text-accent-foreground",
+                      "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                       pathname === item.href ? "bg-accent text-accent-foreground" : "transparent"
                     )}
                   >
@@ -96,7 +96,7 @@ export function DashboardNav() {
                 </Link>
                 
                 {item.subItems && (
-                  <div className="ml-4 mt-1 space-y-5">
+                  <div className="ml-4 mt-1 space-y-1">
                     {item.subItems.map((subItem) => (
                       <Link key={subItem.href} href={subItem.href}>
                         <span

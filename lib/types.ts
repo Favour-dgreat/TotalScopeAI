@@ -1,4 +1,4 @@
-export type ContentType = 'tweet' | 'announcement' | 'meme' | 'hashtag'
+export type ContentType = 'tweet' | 'announcement' | 'narrative' | 'hashtag'
 
 export interface GeneratedItem {
   id: string

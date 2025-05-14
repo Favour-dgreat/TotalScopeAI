@@ -17,9 +17,9 @@ import { ContentType, TokenInfo } from '@/lib/types'
 import { 
   Sparkles, 
   Twitter, 
-  MessageSquare, 
-  Image as ImageIcon,
-  Hash 
+  MessageSquare,
+  Hash,
+  Lightbulb
 } from 'lucide-react'
 
 interface ContentCreationFormProps {
@@ -65,8 +65,8 @@ export function ContentCreationForm({
         return <Twitter className="h-5 w-5 text-blue-500" />
       case 'announcement':
         return <MessageSquare className="h-5 w-5 text-purple-500" />
-      case 'meme':
-        return <ImageIcon className="h-5 w-5 text-pink-500" />
+      case 'narrative':
+        return <Lightbulb className="h-5 w-5 text-yellow-500" />
       case 'hashtag':
         return <Hash className="h-5 w-5 text-green-500" />
       default:
@@ -80,8 +80,8 @@ export function ContentCreationForm({
         return "Generate engaging tweets and threads optimized for your token and Web3 audience"
       case 'announcement':
         return "Create formal announcements for Telegram, Discord, and other community channels"
-      case 'meme':
-        return "Design viral crypto memes using trending formats and your token's branding"
+      case 'narrative':
+        return "Generate compelling crypto narratives that position your project within current market trends"
       case 'hashtag':
         return "Get suggestions for trending hashtags and phrases to maximize your reach"
       default:
@@ -97,23 +97,22 @@ export function ContentCreationForm({
           Content Generator
         </CardTitle>
         <CardDescription>
-          Create AI-powered content for your web3 project with TotalScope AI
+          Create AI-powered content for your crypto project
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-8">
+          <div className="space-y-4">
             <div>
               <Label htmlFor="content-type">Content Type</Label>
-           
-              <Select 
+              <Select
                 value={contentType}
                 onValueChange={(value) => setContentType(value as ContentType)}
               >
                 <SelectTrigger id="content-type" className="w-full">
                   <SelectValue placeholder="Select content type" />
                 </SelectTrigger>
-                <SelectContent  >
+                <SelectContent>
                   <SelectItem value="tweet" className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
                       <Twitter className="h-4 w-4 text-blue-500" />
@@ -126,10 +125,10 @@ export function ContentCreationForm({
                       <span>Community Posts</span>
                     </div>
                   </SelectItem>
-                  <SelectItem value="meme">
+                  <SelectItem value="narrative">
                     <div className="flex items-center gap-2">
-                      <ImageIcon className="h-4 w-4 text-pink-500" />
-                      <span>Meme Generator</span>
+                      <Lightbulb className="h-4 w-4 text-yellow-500" />
+                      <span>Crypto Narratives</span>
                     </div>
                   </SelectItem>
                   <SelectItem value="hashtag">
@@ -146,23 +145,23 @@ export function ContentCreationForm({
             </div>
             
             <div>
-              <Label htmlFor="token-name">Project Name</Label>
+              <Label htmlFor="token-name">Token/Project Name</Label>
               <Input
                 id="token-name"
                 value={tokenName}
                 onChange={(e) => setTokenName(e.target.value)}
-                placeholder="Input your project name"
+                placeholder="e.g., Ethereum"
                 required
               />
             </div>
             
             <div>
-              <Label htmlFor="token-symbol">Building on what Chain?</Label>
+              <Label htmlFor="token-symbol">Token Symbol</Label>
               <Input
                 id="token-symbol"
                 value={tokenSymbol}
                 onChange={(e) => setTokenSymbol(e.target.value)}
-                placeholder="Type in your project chain name"
+                placeholder="e.g., ETH"
                 required
               />
             </div>
