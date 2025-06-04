@@ -1,4 +1,4 @@
-export type ContentType = 'tweet' | 'announcement' | 'narrative' | 'hashtag'
+export type ContentType = 'tweet' | 'narrative' | 'announcement' | 'hashtag'
 
 export interface GeneratedItem {
   id: string
@@ -9,7 +9,7 @@ export interface GeneratedItem {
 
 export interface TokenInfo {
   name: string
-  symbol: string
+  contentIdea: string
   niche: string
   logoUrl?: string
 }
@@ -21,4 +21,12 @@ export interface User {
   name?: string
   avatar?: string
   savedContent: GeneratedItem[]
+}
+
+export interface ActivityItem {
+  id: string
+  type: ContentType
+  timestamp: Date
+  description: string
+  userId: string
 }

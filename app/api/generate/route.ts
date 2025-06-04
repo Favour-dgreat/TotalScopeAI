@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { contentType, tokenName, tokenSymbol, niche } = await req.json();
+    const { contentType, tokenName, tokenSymbol, niche, contentIdea } = await req.json();
 
     if (!contentType || !tokenName || !tokenSymbol || !niche) {
       return NextResponse.json(
@@ -25,9 +25,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log('Received request:', { contentType, tokenName, tokenSymbol, niche });
+    console.log('Received request:', { contentType, tokenName, tokenSymbol, niche, contentIdea });
 
-    const prompt = generatePrompt(contentType, tokenName, tokenSymbol, niche);
+    const prompt = generatePrompt(contentType, tokenName, tokenSymbol, niche, contentIdea);
     console.log('Generated prompt:', prompt);
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
@@ -65,12 +65,15 @@ function generatePrompt(
   contentType: ContentType,
   tokenName: string,
   tokenSymbol: string,
-  niche: string
+  niche: string,
+  contentIdea?: string
 ): string {
   switch (contentType) {
     case 'tweet':
-      return `Generate 5 engaging and unique tweets about ${tokenName} ($${tokenSymbol}) which is in the ${niche} space. Include relevant hashtags and make them sound authentic, not promotional. Each tweet should be under 280 characters.`
-    
+return `Generate 5 engaging and unique tweets about ${tokenName}  which is in the ${niche} space.${
+        contentIdea ? ` Focus on: ${contentIdea}.` : ''
+      } Include relevant hashtags and make them sound authentic, not promotional. Each tweet should be under 280 characters.` 
+          
     case 'announcement':
       return `Create 3 professional community announcements for ${tokenName} ($${tokenSymbol}) in the ${niche} niche that could be posted on Discord or Telegram. Include emoji where appropriate and format them to be easily readable.`
     

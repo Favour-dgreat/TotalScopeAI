@@ -26,9 +26,8 @@ interface ContentCreationFormProps {
   onGenerateContent: (
     contentType: ContentType,
     tokenName: string,
-    tokenSymbol: string,
     niche: string,
-    logoUrl?: string
+    contentIdea?: string,
   ) => void
   isGenerating: boolean
 }
@@ -39,23 +38,22 @@ export function ContentCreationForm({
 }: ContentCreationFormProps) {
   const [contentType, setContentType] = useState<ContentType>('tweet')
   const [tokenName, setTokenName] = useState('')
-  const [tokenSymbol, setTokenSymbol] = useState('')
   const [tokenNiche, setTokenNiche] = useState('')
-  const [logoUrl, setLogoUrl] = useState('')
+  const [tokenSymbol, setTokenSymbol] = useState('')
+  const [contentIdea, setContentIdea] = useState('')
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!tokenName || !tokenSymbol || !tokenNiche) {
+    if (!tokenName || !contentIdea ||  !tokenNiche) {
       return
     }
     
     onGenerateContent(
       contentType,
       tokenName,
-      tokenSymbol,
       tokenNiche,
-      logoUrl || undefined
+      contentIdea || undefined,
     )
   }
   
@@ -156,13 +154,12 @@ export function ContentCreationForm({
             </div>
             
             <div>
-              <Label htmlFor="token-symbol">Token Symbol</Label>
+              <Label htmlFor="token-symbol">Token Symbol (Optional)</Label>
               <Input
                 id="token-symbol"
                 value={tokenSymbol}
                 onChange={(e) => setTokenSymbol(e.target.value)}
                 placeholder="e.g., ETH"
-                required
               />
             </div>
             
@@ -176,22 +173,25 @@ export function ContentCreationForm({
                 required
               />
             </div>
-            
-            <div>
-              <Label htmlFor="logo-url">Logo URL (optional)</Label>
-              <Input
-                id="logo-url"
-                value={logoUrl}
-                onChange={(e) => setLogoUrl(e.target.value)}
-                placeholder="https://example.com/logo.png"
-              />
-            </div>
+             {contentType === 'tweet' && (
+              <div>
+                <Label htmlFor="content-idea">Content Idea/Topic </Label>
+                <Textarea
+                  id="content-idea"
+                  value={contentIdea}
+                  onChange={(e) => setContentIdea(e.target.value)}
+                  placeholder="What would you like to tweet about? e.g., New feature announcement, market update, community milestone"
+                  className="resize-none"
+                  rows={3}
+                />
+              </div>
+            )}
           </div>
           
           <Button 
             type="submit" 
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            disabled={isGenerating || !tokenName || !tokenSymbol || !tokenNiche}
+            disabled={isGenerating || !tokenName || !contentIdea || !tokenNiche}
           >
             {isGenerating ? (
               <span className="flex items-center gap-2">

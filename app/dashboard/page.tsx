@@ -1,18 +1,21 @@
 "use client"
 
 import { useState } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { DashboardLayout } from '@/components/dashboard/layout'
 import { DashboardHeader } from '@/components/dashboard/header'
 import { DashboardNav } from '@/components/dashboard/nav'
 import { ContentCreationForm } from '@/components/dashboard/content-creation-form'
 import { GeneratedContent } from '@/components/dashboard/generated-content'
+import { RecentActivity } from '@/components/dashboard/recent-activity'
 import { ContentType, GeneratedItem } from '@/lib/types'
-import { useToast } from '@/hooks/use-toast'
+import { auth } from '@/lib/firebase'
+import { trackActivity } from '@/lib/activity'
 
 export default function DashboardPage() {
   const [generatedContent, setGeneratedContent] = useState<GeneratedItem[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
-  const { toast } = useToast()
+  const [user] = useAuthState(auth)
 
   const handleGenerateContent = async (
     contentType: ContentType,
@@ -22,7 +25,7 @@ export default function DashboardPage() {
     logoUrl?: string
   ) => {
     setIsGenerating(true)
-
+    
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -34,7 +37,7 @@ export default function DashboardPage() {
           tokenName,
           tokenSymbol,
           niche,
-          logoUrl,
+          logoUrl
         }),
       })
 
@@ -43,23 +46,18 @@ export default function DashboardPage() {
       }
 
       const data = await response.json()
-      
-      if (data.error) {
-        throw new Error(data.error)
-      }
-
       setGeneratedContent(data.items)
-      toast({
-        title: "Content generated successfully",
-        description: "Your AI-generated content is ready!",
-      })
+
+      // Track activity if user is authenticated
+      if (user) {
+        await trackActivity(
+          user.uid,
+          contentType,
+          `Generated ${contentType} content for ${tokenName} ($${tokenSymbol})`
+        )
+      }
     } catch (error) {
       console.error('Error generating content:', error)
-      toast({
-        title: "Error generating content",
-        description: error instanceof Error ? error.message : "Please try again later",
-        variant: "destructive",
-      })
     } finally {
       setIsGenerating(false)
     }
@@ -71,15 +69,22 @@ export default function DashboardPage() {
       <div className="flex min-h-screen">
         <DashboardNav />
         <main className="flex-1 p-6 md:p-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <ContentCreationForm 
-              onGenerateContent={handleGenerateContent}
-              isGenerating={isGenerating}
-            />
-            <GeneratedContent 
-              items={generatedContent}
-              isLoading={isGenerating}
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <div className="grid grid-cols-1 gap-8">
+                <ContentCreationForm 
+                  onGenerateContent={handleGenerateContent}
+                  isGenerating={isGenerating}
+                />
+                <GeneratedContent 
+                  items={generatedContent}
+                  isLoading={isGenerating}
+                />
+              </div>
+            </div>
+            <div>
+              <RecentActivity />
+            </div>
           </div>
         </main>
       </div>
