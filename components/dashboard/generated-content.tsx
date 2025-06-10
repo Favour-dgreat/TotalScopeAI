@@ -70,7 +70,7 @@ export function GeneratedContent({ items, isLoading }: GeneratedContentProps) {
           <div className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-12 w-12 animate-spin text-muted-foreground mb-4" />
             <p className="text-muted-foreground text-center max-w-xs">
-              Crafting brilliant content with AI magic...
+              Crafting brilliant content with TotalScope AI magic...
             </p>
           </div>
         ) : items.length > 0 ? (

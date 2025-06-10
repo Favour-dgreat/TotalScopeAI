@@ -27,6 +27,9 @@ interface ContentCreationFormProps {
     contentType: ContentType,
     tokenName: string,
     niche: string,
+    targetAudience: string,
+    tone: string,
+    cta: string,
     contentIdea?: string,
   ) => void
   isGenerating: boolean
@@ -41,6 +44,9 @@ export function ContentCreationForm({
   const [tokenNiche, setTokenNiche] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
   const [contentIdea, setContentIdea] = useState('')
+  const [targetAudience, setTargetAudience] = useState('')
+  const [tone, setTone] = useState('')
+  const [cta, setCta] = useState('')
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,6 +59,9 @@ export function ContentCreationForm({
       contentType,
       tokenName,
       tokenNiche,
+      targetAudience,
+      tone,
+      cta,
       contentIdea || undefined,
     )
   }
@@ -173,7 +182,40 @@ export function ContentCreationForm({
                 required
               />
             </div>
-             {contentType === 'tweet' && (
+
+             <div>
+              <Label htmlFor="target-audience">Target Audience</Label>
+              <Input
+                id="target-audience"
+                value={targetAudience}
+                onChange={(e) => setTargetAudience(e.target.value)}
+                placeholder="e.g., community, investors, gamers"
+                required
+              />
+            </div>
+             
+             <div>
+              <Label htmlFor="tone">Tone</Label>
+              <Input
+                id="tone"
+                value={tone}
+                onChange={(e) => setTone(e.target.value)}
+                placeholder="e.g., formal, humorous, informative"
+                required
+              />
+            </div>
+
+              <div>
+              <Label htmlFor="tone">CTA</Label>
+              <Input
+                id="cta"
+                value={cta}
+                onChange={(e) => setCta(e.target.value)}
+                placeholder="e.g., Join our Discord, Try it now, Follow us on Twitter/X"
+                required
+              />
+            </div>
+             
               <div>
                 <Label htmlFor="content-idea">Content Idea/Topic </Label>
                 <Textarea
@@ -185,7 +227,7 @@ export function ContentCreationForm({
                   rows={3}
                 />
               </div>
-            )}
+          
           </div>
           
           <Button 

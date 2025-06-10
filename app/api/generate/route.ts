@@ -16,7 +16,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { contentType, tokenName, tokenSymbol, niche, contentIdea } = await req.json();
+    const {
+      contentType,
+      tokenName,
+      tokenSymbol,
+      niche,
+      contentIdea,
+      targetAudience,
+      tone,
+      cta,
+    } = await req.json();
 
     if (!contentType || !tokenName || !tokenSymbol || !niche) {
       return NextResponse.json(
@@ -25,20 +34,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log('Received request:', { contentType, tokenName, tokenSymbol, niche, contentIdea });
+    console.log('Received request:', {
+      contentType,
+      tokenName,
+      tokenSymbol,
+      niche,
+      contentIdea,
+      targetAudience,
+      tone,
+      cta,
+    });
 
-    const prompt = generatePrompt(contentType, tokenName, tokenSymbol, niche, contentIdea);
+    const prompt = generatePrompt(
+      contentType,
+      tokenName,
+      niche,
+      contentIdea,
+      targetAudience,
+      tone,
+      cta
+    );
     console.log('Generated prompt:', prompt);
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash-latest',
+    });
 
     const result = await model.generateContent({
       contents: [
         {
           role: 'user',
-          parts: [{ text: prompt }]
-        }
-      ]
+          parts: [{ text: prompt }],
+        },
+      ],
     });
 
     const response = result.response.text();
@@ -55,7 +83,12 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error generating content:', error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to generate content' },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Failed to generate content',
+      },
       { status: 500 }
     );
   }
@@ -64,32 +97,45 @@ export async function POST(req: NextRequest) {
 function generatePrompt(
   contentType: ContentType,
   tokenName: string,
-  tokenSymbol: string,
   niche: string,
-  contentIdea?: string
+  contentIdea?: string,
+  targetAudience?: string,
+  tone?: string,
+  cta?: string
 ): string {
+  const baseDetails = `${tokenName} in the ${niche} space${
+    targetAudience ? `, targeting ${targetAudience}` : ''
+  }.`;
+
+  const style = tone ? ` Use a ${tone.toLowerCase()} tone.` : '';
+  const callToAction = cta ? ` End with a CTA: ${cta}` : '';
+
   switch (contentType) {
     case 'tweet':
-return `Generate 5 engaging and unique tweets about ${tokenName}  which is in the ${niche} space.${
-        contentIdea ? ` Focus on: ${contentIdea}.` : ''
-      } Include relevant hashtags and make them sound authentic, not promotional. Each tweet should be under 280 characters.` 
-          
+      return `You are the Social media manager, please create 5 engaging tweets for ${baseDetails}${
+        contentIdea ? ` taking an example from: ${contentIdea}.` : ''
+      }${style}${callToAction} Include relevant hashtags and keep each tweet under 500 characters. Make them sound really good, and based on the content idea provided.`;
+
     case 'announcement':
-      return `Create 3 professional community announcements for ${tokenName} ($${tokenSymbol}) in the ${niche} niche that could be posted on Discord or Telegram. Include emoji where appropriate and format them to be easily readable.`
-    
+      return `Create 3 professional community announcements for ${baseDetails}${
+        contentIdea ? ` Focus on: ${contentIdea}.` : ''
+      }${style}${callToAction} These announcements are for Discord or Telegram. Include emoji where appropriate and make the formatting easy to read.`;
+
     case 'narrative':
-      return `Create 3 compelling crypto narratives for ${tokenName} ($${tokenSymbol}) in the ${niche} sector. Each narrative should be a short, engaging story that positions the project within current market trends and technological developments. Focus on unique value propositions and potential market impact. Include relevant industry context and market dynamics.`
-    
+      return `Write 3 compelling crypto narratives for ${baseDetails}${
+        contentIdea ? ` Focus on: ${contentIdea}.` : ''
+      }${style}${callToAction} Each should be a short, story-driven post that aligns with current market trends and highlights the project's unique value proposition and potential impact.`;
+
     case 'hashtag':
-      return `Generate 3 sets of trending hashtags that would be relevant for ${tokenName} ($${tokenSymbol}) in the ${niche} space. Include both specific and general crypto/web3 hashtags to maximize reach. Each set should have 8-10 hashtags.`
-    
+      return `Generate 3 sets of trending hashtags for ${baseDetails}${style}. Each set should contain 8-10 hashtags, combining specific and broad crypto/web3-related keywords to maximize reach.`;
+
     default:
-      return `Generate content about ${tokenName} ($${tokenSymbol}) in the ${niche} space.`
+      return `Generate content about ${baseDetails}${style}${callToAction}`;
   }
 }
 
 function parseResponse(response: string, contentType: ContentType) {
-  const lines = response.split('\n').filter(line => line.trim());
+  const lines = response.split('\n').filter((line) => line.trim());
   const items: any[] = [];
 
   lines.forEach((line, index) => {

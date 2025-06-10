@@ -11,6 +11,9 @@ export interface TokenInfo {
   name: string
   contentIdea: string
   niche: string
+  targetAudience?: string
+  tone?: string
+  cta?: string
   logoUrl?: string
 }
 
