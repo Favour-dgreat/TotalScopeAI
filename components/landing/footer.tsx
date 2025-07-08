@@ -3,12 +3,12 @@ import { Twitter, Github, Mail } from 'lucide-react'
 
 export function LandingFooter() {
   return (
-    <footer className="border-t justify-center flex items-center ">
+    <footer className="border-t flex justify-center items-center">
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+              <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                 TotalScope AI
               </span>
             </Link>
@@ -17,7 +17,7 @@ export function LandingFooter() {
             </p>
             <div className="flex space-x-4">
               <Link 
-                href="https:/x.com/" 
+                href="https://twitter.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"

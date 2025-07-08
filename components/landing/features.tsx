@@ -26,7 +26,7 @@ export function LandingFeatures() {
           <FeatureCard
             icon={<Twitter className="h-10 w-10 text-blue-500" />}
             title="Tweet & Thread Generator"
-            description="Create engaging tweets and threads tailored to your token's niche and the latest Web3 trends"
+            description="Create engaging tweets and threads tailored to your project's niche and the latest Web3 trends"
           />
           
           <FeatureCard
@@ -56,7 +56,7 @@ export function LandingFeatures() {
           <FeatureCard
             icon={<Cpu className="h-10 w-10 text-teal-500" />}
             title="AI Customization"
-            description="Tailor the AI to your token's voice, style, and audience for consistent messaging"
+            description="Tailor the AI to your project's voice, style, and audience for consistent messaging"
           />
           
           <FeatureCard

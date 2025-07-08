@@ -11,7 +11,7 @@ import { RecentActivity } from '@/components/dashboard/recent-activity'
 import { ContentType, GeneratedItem } from '@/lib/types'
 import { auth } from '@/lib/firebase'
 import { trackActivity } from '@/lib/activity'
-
+import { LandingFooter} from '@/components/landing/footer'
 export default function DashboardPage() {
   const [generatedContent, setGeneratedContent] = useState<GeneratedItem[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
@@ -87,7 +87,9 @@ export default function DashboardPage() {
             </div>
           </div>
         </main>
+
       </div>
+      <LandingFooter />
     </DashboardLayout>
   )
 }

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/mode-toggle'
+import Image from 'next/image'
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -20,42 +21,13 @@ import {
   Menu,
   X
 } from 'lucide-react'
-import { auth } from '@/lib/firebase' // Import Firebase Auth
-import { onAuthStateChanged, signOut } from 'firebase/auth' // Import required Firebase methods
-import { useRouter } from 'next/navigation' // For navigation after logout
 
 export function DashboardHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [username, setUsername] = useState<string | null>(null)
-  const router = useRouter()
-
-  // Fetch the logged-in user's username
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Set the username (use displayName or email as fallback)
-        setUsername(user.displayName || user.email || "User")
-      } else {
-        setUsername(null)
-      }
-    })
-
-    return () => unsubscribe() // Cleanup the listener on unmount
-  }, [])
-
-  // Handle logout
-  const handleLogout = async () => {
-    try {
-      await signOut(auth) // Sign out the user
-      router.push('/') // Redirect to the landing page
-    } catch (error) {
-      console.error("Error logging out:", error)
-    }
-  }
-
+  
   return (
-    <header className="border-b">
-      <div className="container flex h-16 items-center justify-between px-6">
+    <header className="border-b flex justify-center items-center bg-background/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+      <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             className="md:hidden"
@@ -68,11 +40,18 @@ export function DashboardHeader() {
             )}
           </button>
           
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-              TotalScope AI
-            </span>
-          </Link>
+         <Link href="/" className="flex items-center gap-2">
+          <Image 
+            src="/images/TotalScopeStackedLogo.png" 
+            alt="TotalScope AI Logo" 
+            height={40}
+            width={40}
+            className="h-12 w-12"
+          />
+          <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
+            TotalScope AI
+          </span>
+        </Link>
         </div>
         
         <div className="flex items-center gap-4">
@@ -92,7 +71,7 @@ export function DashboardHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{username || "My Account"}</DropdownMenuLabel>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/profile" className="flex items-center gap-2 cursor-pointer">
@@ -107,9 +86,11 @@ export function DashboardHeader() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 cursor-pointer text-destructive">
-                <LogOut className="h-4 w-4" />
-                Log out
+              <DropdownMenuItem asChild>
+                <Link href="/" className="flex items-center gap-2 cursor-pointer text-destructive">
+                  <LogOut className="h-4 w-4" />
+                  Log out
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

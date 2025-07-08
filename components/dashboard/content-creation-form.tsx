@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { FileUpload } from '@/components/ui/file-upload'
 import { 
   Select, 
   SelectContent, 
@@ -17,20 +19,22 @@ import { ContentType, TokenInfo } from '@/lib/types'
 import { 
   Sparkles, 
   Twitter, 
-  MessageSquare,
+  MessageSquare, 
+  Image as ImageIcon,
   Hash,
-  Lightbulb
+  FileText,
+  Edit3
 } from 'lucide-react'
 
 interface ContentCreationFormProps {
   onGenerateContent: (
     contentType: ContentType,
     tokenName: string,
+    tokenSymbol: string,
     niche: string,
-    targetAudience: string,
-    tone: string,
-    cta: string,
+    logoUrl?: string,
     contentIdea?: string,
+    documentContent?: string
   ) => void
   isGenerating: boolean
 }
@@ -41,29 +45,51 @@ export function ContentCreationForm({
 }: ContentCreationFormProps) {
   const [contentType, setContentType] = useState<ContentType>('tweet')
   const [tokenName, setTokenName] = useState('')
-  const [tokenNiche, setTokenNiche] = useState('')
   const [tokenSymbol, setTokenSymbol] = useState('')
+  const [tokenNiche, setTokenNiche] = useState('')
+  const [logoUrl, setLogoUrl] = useState('')
   const [contentIdea, setContentIdea] = useState('')
-  const [targetAudience, setTargetAudience] = useState('')
-  const [tone, setTone] = useState('')
-  const [cta, setCta] = useState('')
+  const [inputMethod, setInputMethod] = useState<'manual' | 'document'>('manual')
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [documentContent, setDocumentContent] = useState('')
+  const [isProcessingFile, setIsProcessingFile] = useState(false)
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!tokenName || !contentIdea ||  !tokenNiche) {
+    if (inputMethod === 'manual' && (!tokenName || !tokenNiche)) {
+      return
+    }
+    
+    if (inputMethod === 'document' && !documentContent) {
       return
     }
     
     onGenerateContent(
       contentType,
-      tokenName,
-      tokenNiche,
-      targetAudience,
-      tone,
-      cta,
+      inputMethod === 'manual' ? tokenName : (uploadedFile?.name.split('.')[0] || 'Project'),
+      inputMethod === 'manual' ? tokenSymbol : '',
+      inputMethod === 'manual' ? tokenNiche : 'Web3',
+      logoUrl || undefined,
       contentIdea || undefined,
+      inputMethod === 'document' ? documentContent : undefined
     )
+  }
+  
+  const handleFileUpload = async (file: File, content: string) => {
+    setIsProcessingFile(true)
+    
+    // Simulate processing time
+    setTimeout(() => {
+      setUploadedFile(file)
+      setDocumentContent(content)
+      setIsProcessingFile(false)
+    }, 1500)
+  }
+  
+  const handleFileRemove = () => {
+    setUploadedFile(null)
+    setDocumentContent('')
   }
   
   const getContentTypeIcon = (type: ContentType) => {
@@ -73,7 +99,7 @@ export function ContentCreationForm({
       case 'announcement':
         return <MessageSquare className="h-5 w-5 text-purple-500" />
       case 'narrative':
-        return <Lightbulb className="h-5 w-5 text-yellow-500" />
+        return <ImageIcon className="h-5 w-5 text-pink-500" />
       case 'hashtag':
         return <Hash className="h-5 w-5 text-green-500" />
       default:
@@ -88,7 +114,7 @@ export function ContentCreationForm({
       case 'announcement':
         return "Create formal announcements for Telegram, Discord, and other community channels"
       case 'narrative':
-        return "Generate compelling crypto narratives that position your project within current market trends"
+        return "Craft compelling narratives that position your project within current market trends"
       case 'hashtag':
         return "Get suggestions for trending hashtags and phrases to maximize your reach"
       default:
@@ -132,10 +158,10 @@ export function ContentCreationForm({
                       <span>Community Posts</span>
                     </div>
                   </SelectItem>
-                  <SelectItem value="narrative">
+                  <SelectItem value="meme">
                     <div className="flex items-center gap-2">
-                      <Lightbulb className="h-4 w-4 text-yellow-500" />
-                      <span>Crypto Narratives</span>
+                      <ImageIcon className="h-4 w-4 text-pink-500" />
+                      <span>Narratives</span>
                     </div>
                   </SelectItem>
                   <SelectItem value="hashtag">
@@ -152,93 +178,140 @@ export function ContentCreationForm({
             </div>
             
             <div>
-              <Label htmlFor="token-name">Token/Project Name</Label>
-              <Input
-                id="token-name"
-                value={tokenName}
-                onChange={(e) => setTokenName(e.target.value)}
-                placeholder="e.g., Ethereum"
-                required
-              />
+              <Label className="text-base font-medium">Input Method</Label>
+              <Tabs value={inputMethod} onValueChange={(value) => setInputMethod(value as 'manual' | 'document')} className="mt-2">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="manual" className="flex items-center gap-2">
+                    <Edit3 className="h-4 w-4" />
+                    Manual Input
+                  </TabsTrigger>
+                  <TabsTrigger value="document" className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Upload Document
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="manual" className="space-y-4 mt-4">
+                  <div>
+                    <Label htmlFor="token-name">Token/Project Name</Label>
+                    <Input
+                      id="token-name"
+                      value={tokenName}
+                      onChange={(e) => setTokenName(e.target.value)}
+                      placeholder="e.g., Ethereum"
+                      required={inputMethod === 'manual'}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="token-symbol">Token Symbol (optional)</Label>
+                    <Input
+                      id="token-symbol"
+                      value={tokenSymbol}
+                      onChange={(e) => setTokenSymbol(e.target.value)}
+                      placeholder="e.g., ETH"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="token-niche">Project Niche/Category</Label>
+                    <Input
+                      id="token-niche"
+                      value={tokenNiche}
+                      onChange={(e) => setTokenNiche(e.target.value)}
+                      placeholder="e.g., DeFi, Gaming, NFT marketplace"
+                      required={inputMethod === 'manual'}
+                    />
+                  </div>
+                  
+                  {contentType === 'tweet' && (
+                    <div>
+                      <Label htmlFor="content-idea">Content Idea (optional)</Label>
+                      <Textarea
+                        id="content-idea"
+                        value={contentIdea}
+                        onChange={(e) => setContentIdea(e.target.value)}
+                        placeholder="Describe what you want to tweet about, any specific topics, announcements, or themes..."
+                        rows={3}
+                      />
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Provide specific ideas or topics you want to tweet about to get more targeted content
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+                
+                <TabsContent value="document" className="space-y-4 mt-4">
+                  <div>
+                    <Label className="text-sm font-medium mb-3 block">
+                      Upload Project Document
+                    </Label>
+                    <FileUpload
+                      onFileUpload={handleFileUpload}
+                      onFileRemove={handleFileRemove}
+                      isProcessing={isProcessingFile}
+                      uploadedFile={uploadedFile}
+                    />
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Upload your project whitepaper, pitch deck, or any document containing project details. 
+                      Our AI will analyze the content and generate relevant social media content.
+                    </p>
+                  </div>
+                  
+                  {documentContent && (
+                    <div>
+                      <Label className="text-sm font-medium">Document Preview</Label>
+                      <div className="mt-2 p-3 bg-muted rounded-md max-h-32 overflow-y-auto">
+                        <p className="text-sm text-muted-foreground">
+                          {documentContent.substring(0, 200)}
+                          {documentContent.length > 200 && '...'}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {contentType === 'tweet' && documentContent && (
+                    <div>
+                      <Label htmlFor="content-focus">Content Focus (optional)</Label>
+                      <Textarea
+                        id="content-focus"
+                        value={contentIdea}
+                        onChange={(e) => setContentIdea(e.target.value)}
+                        placeholder="Specify which aspects of your project to focus on (e.g., recent updates, partnerships, technical features)..."
+                        rows={2}
+                      />
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
             
             <div>
-              <Label htmlFor="token-symbol">Token Symbol (Optional)</Label>
+              <Label htmlFor="logo-url">Logo URL (optional)</Label>
               <Input
-                id="token-symbol"
-                value={tokenSymbol}
-                onChange={(e) => setTokenSymbol(e.target.value)}
-                placeholder="e.g., ETH"
+                id="logo-url"
+                value={logoUrl}
+                onChange={(e) => setLogoUrl(e.target.value)}
+                placeholder="https://example.com/logo.png"
               />
             </div>
-            
-            <div>
-              <Label htmlFor="token-niche">Project Niche/Category</Label>
-              <Input
-                id="token-niche"
-                value={tokenNiche}
-                onChange={(e) => setTokenNiche(e.target.value)}
-                placeholder="e.g., DeFi, Gaming, NFT marketplace"
-                required
-              />
-            </div>
-
-             <div>
-              <Label htmlFor="target-audience">Target Audience</Label>
-              <Input
-                id="target-audience"
-                value={targetAudience}
-                onChange={(e) => setTargetAudience(e.target.value)}
-                placeholder="e.g., community, investors, gamers"
-                required
-              />
-            </div>
-             
-             <div>
-              <Label htmlFor="tone">Tone</Label>
-              <Input
-                id="tone"
-                value={tone}
-                onChange={(e) => setTone(e.target.value)}
-                placeholder="e.g., formal, humorous, informative"
-                required
-              />
-            </div>
-
-              <div>
-              <Label htmlFor="tone">CTA</Label>
-              <Input
-                id="cta"
-                value={cta}
-                onChange={(e) => setCta(e.target.value)}
-                placeholder="e.g., Join our Discord, Try it now, Follow us on Twitter/X"
-                required
-              />
-            </div>
-             
-              <div>
-                <Label htmlFor="content-idea">Content Idea/Topic </Label>
-                <Textarea
-                  id="content-idea"
-                  value={contentIdea}
-                  onChange={(e) => setContentIdea(e.target.value)}
-                  placeholder="What would you like to tweet about? e.g., New feature announcement, market update, community milestone"
-                  className="resize-none"
-                  rows={3}
-                />
-              </div>
-          
           </div>
           
           <Button 
             type="submit" 
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            disabled={isGenerating || !tokenName || !contentIdea || !tokenNiche}
+            className="w-full"
+            style={{ background: 'linear-gradient(to left, rgba(116, 0, 139, 1), rgba(17, 6, 20, 1))' }}
+            disabled={
+              isGenerating || 
+              isProcessingFile ||
+              (inputMethod === 'manual' && (!tokenName || !tokenNiche)) ||
+              (inputMethod === 'document' && !documentContent)
+            }
           >
-            {isGenerating ? (
+            {isGenerating || isProcessingFile ? (
               <span className="flex items-center gap-2">
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                Generating...
+                {isProcessingFile ? 'Processing Document...' : 'Generating...'}
               </span>
             ) : (
               <span className="flex items-center gap-2">

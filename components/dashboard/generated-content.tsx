@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { ContentType, GeneratedItem } from '@/lib/types'
@@ -163,7 +163,9 @@ interface ContentCardProps {
 
 function ContentCard({ item, isSaved, onCopy, onSave }: ContentCardProps) {
   return (
-    <div className="border rounded-lg p-4 bg-card/50">
+      <div className="border rounded-lg p-4 bg-card/50">
+     
+      
       <p className="whitespace-pre-line mb-4">{item.content}</p>
       
       <div className="flex items-center justify-between mt-2">
@@ -172,6 +174,7 @@ function ContentCard({ item, isSaved, onCopy, onSave }: ContentCardProps) {
             <Copy className="h-4 w-4 mr-2" />
             Copy
           </Button>
+          
         </div>
         
         <div className="flex items-center gap-2">

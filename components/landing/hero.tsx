@@ -3,17 +3,17 @@
 import { useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Sparkles, Twitter, MessageSquare, Image, Hash } from 'lucide-react'
+import { ArrowRight, Sparkles, Twitter, MessageSquare, Lightbulb, Hash } from 'lucide-react'
 export function LandingHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    
+
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    
+
     const setCanvasDimensions = () => {
       const { width, height } = canvas.getBoundingClientRect()
       const dpr = window.devicePixelRatio || 1
@@ -21,10 +21,10 @@ export function LandingHero() {
       canvas.height = height * dpr
       ctx.scale(dpr, dpr)
     }
-    
+
     window.addEventListener('resize', setCanvasDimensions)
     setCanvasDimensions()
-    
+
     const particles: {
       x: number
       y: number
@@ -34,8 +34,9 @@ export function LandingHero() {
       color: string
       alpha: number
     }[] = []
-    
-    for (let i = 0; i < 50; i++) {
+
+    // Increase the number of particles massively (e.g., 400)
+    for (let i = 0; i < 400; i++) {
       const size = Math.random() * 2 + 0.5
       particles.push({
         x: Math.random() * canvas.width,
@@ -47,34 +48,34 @@ export function LandingHero() {
         alpha: Math.random() * 0.5 + 0.1
       })
     }
-    
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      
+
       particles.forEach(particle => {
         ctx.globalAlpha = particle.alpha
         ctx.fillStyle = particle.color
         ctx.beginPath()
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
         ctx.fill()
-        
+
         particle.x += particle.speedX
         particle.y += particle.speedY
-        
+
         if (particle.x < 0 || particle.x > canvas.width) {
           particle.speedX *= -1
         }
-        
+
         if (particle.y < 0 || particle.y > canvas.height) {
           particle.speedY *= -1
         }
       })
-      
+
       requestAnimationFrame(animate)
     }
-    
+
     animate()
-    
+
     return () => {
       window.removeEventListener('resize', setCanvasDimensions)
     }
@@ -90,7 +91,7 @@ export function LandingHero() {
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-8">
           <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 mb-2">
             <Sparkles className="mr-2 h-4 w-4" />
-            <span className="text-sm font-medium">AI-Powered Web3 Content Generation</span>
+            <span className="text-sm font-medium">AI-Powered Web3 Content Generation (Beta)</span>
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[rgba(116,0,139,1)] via-[rgba(147,51,234,1)] to-[rgba(168,85,247,1)]">
@@ -104,14 +105,14 @@ export function LandingHero() {
           
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link href="/auth">
-              <Button size="lg" className="relative group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
+              <Button size="lg" className="relative group bg-gradient-to-r text-white from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                 Start Creating
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 <span className="absolute -inset-0.5 -z-10 rounded-lg bg-gradient-to-r  from-[rgba(116,0,139,1)] to-[rgba(17,6,20,10)] opacity-30 blur-xl transition-all duration-500 group-hover:opacity-70" />
               </Button>
             </Link>
             <Link href="/features">
-              <Button size="lg" variant="outline">See Features</Button>
+              <Button  size="lg" variant="outline">See Features</Button>
             </Link>
           </div>
           
@@ -132,9 +133,9 @@ export function LandingHero() {
             
             <div className="flex flex-col items-center p-4 bg-card/50 backdrop-blur-sm rounded-lg border border-border/50 hover:border-primary/20 transition-all hover:shadow-md hover:shadow-primary/5">
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-                <Image className="h-6 w-6 text-primary" />
+                <Lightbulb className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-medium">Meme Generator</h3>
+              <h3 className="font-medium">Narrative Generator</h3>
             </div>
             
             <div className="flex flex-col items-center p-4 bg-card/50 backdrop-blur-sm rounded-lg border border-border/50 hover:border-primary/20 transition-all hover:shadow-md hover:shadow-accent/5">

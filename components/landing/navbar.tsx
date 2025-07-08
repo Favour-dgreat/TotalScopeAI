@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -27,7 +28,14 @@ export function LandingNavbar() {
     >
       <div className="container flex h-16 items-center px-4 justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+          <Image 
+            src="/images/TotalScopeStackedLogo.png" 
+            alt="TotalScope AI Logo" 
+            height={40}
+            width={40}
+            className="h-12 w-12"
+          />
+          <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
             TotalScope AI
           </span>
         </Link>
@@ -53,7 +61,7 @@ export function LandingNavbar() {
             </Button>
           </Link>
           <Link href="/auth">
-            <Button variant="default" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  <Button variant="default" className="bg-gradient-to-r text-white from-primary to-accent hover:from-primary/90 hover:to-accent/90">
               Get Started
             </Button>
           </Link>
@@ -90,7 +98,7 @@ export function LandingNavbar() {
                   <Button variant="ghost" size="sm">Dashboard</Button>
                 </Link>
                 <Link href="/auth">
-                  <Button variant="default" size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  <Button variant="default" size="sm" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                     Get Started
                   </Button>
                 </Link>
