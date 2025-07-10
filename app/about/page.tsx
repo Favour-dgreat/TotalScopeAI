@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { LandingNavbar } from '@/components/landing/navbar'
 import { LandingFooter } from '@/components/landing/footer'
+import { WaitlistForm } from '@/components/landing/waitlist-form'
 import { 
   ArrowRight,
   Sparkles,
@@ -20,7 +21,7 @@ import {
 
 export default function AboutPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex justify-center items-center min-h-screen flex-col">
       <LandingNavbar />
       <main className="flex-1">
         {/* Hero Section */}
@@ -31,12 +32,12 @@ export default function AboutPage() {
                 <Sparkles className="mr-2 h-4 w-4" />
                 <span className="text-sm font-medium">About TotalScope AI</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[rgba(0,0,170,1)] to-[rgba(122,40,138,1)]">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[rgba(116,0,139,1)] via-[rgba(147,51,234,1)] to-[rgba(168,85,247,1)]">
                 Empowering the Future<br />
                 of Web3 Content
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                We're on a mission to democratize high-quality content creation for the crypto and Web3 ecosystem, making professional-grade marketing accessible to projects of all sizes.
+                We&apos;re on a mission to democratize high-quality content creation for the crypto and Web3 ecosystem, making professional-grade marketing accessible to projects of all sizes.
               </p>
             </div>
           </div>
@@ -104,22 +105,22 @@ export default function AboutPage() {
                 />
                 
                 <StoryCard
-                  year="2023"
+                  year="2025"
                   title="The Vision"
                   description="We realized that AI could bridge this gap. By training models specifically on crypto terminology, market dynamics, and community culture, we could create a tool that understands Web3 like a native speaker."
                 />
                 
                 <StoryCard
-                  year="2024"
+                  year="2025"
                   title="The Launch"
-                  description="After months of development and testing with leading crypto projects, TotalScope AI was born. Our beta users saw immediate improvements in engagement and community growth."
+                  description="After months of development and testing with leading crypto projects, TotalScope AI was born. Our beta users are joining us in this journey to test and validate TotalScope AI immediate impact in engagement and community growth."
                 />
                 
-                <StoryCard
+                {/* <StoryCard
                   year="2025"
                   title="The Future"
                   description="Today, we're expanding our capabilities and serving thousands of projects worldwide. Our goal remains the same: empowering every Web3 project to tell their story effectively."
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -219,7 +220,10 @@ export default function AboutPage() {
 
         {/* CTA Section */}
         <section className="py-20">
-          <div className="container text-center">
+          <WaitlistForm />
+          
+          {/* Uncomment this section if you want to add a CTA */}
+          {/* <div className="container text-center">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
               Join Our Mission
             </h2>
@@ -233,13 +237,13 @@ export default function AboutPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/features">
+              <Link href="/">
                 <Button size="lg" variant="outline">
-                  Explore Features
+                  Join the Waitlist
                 </Button>
               </Link>
             </div>
-          </div>
+          </div> */}
         </section>
       </main>
       <LandingFooter />

@@ -3,7 +3,7 @@ import { Twitter, Github, Mail } from 'lucide-react'
 
 export function LandingFooter() {
   return (
-    <footer className="border-t flex justify-center items-center">
+    <footer className="border-t p-5 flex justify-center items-center">
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
@@ -13,7 +13,7 @@ export function LandingFooter() {
               </span>
             </Link>
             <p className="text-muted-foreground max-w-md mb-4">
-              AI-powered content generation platform for crypto and Web3 projects. Tweets, threads, community posts, and more.
+              TotalScope AI is an AI-powered content generation platform for crypto and Web3 projects. Tweets, threads, community posts, and more, a product of <a href='www.totalscope.agency' style={{textDecoration: 'underline'}}>Total Scope Agency</a>
             </p>
             <div className="flex space-x-4">
               <Link 
@@ -99,7 +99,7 @@ export function LandingFooter() {
         
         <div className="border-t mt-12 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} TotalScope AI. All rights reserved.
+            © {new Date().getFullYear()} TotalScope Agency. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground mt-2 md:mt-0">
             Made with ❤️ for the Web3 community

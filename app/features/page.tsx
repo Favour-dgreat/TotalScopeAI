@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { LandingNavbar } from '@/components/landing/navbar'
 import { LandingFooter } from '@/components/landing/footer'
+import { WaitlistForm } from '@/components/landing/waitlist-form'
 import { 
   Twitter, 
   MessageSquare, 
@@ -210,7 +211,8 @@ export default function FeaturesPage() {
 
         {/* CTA Section */}
         <section className="py-20 flex items-center justify-center bg-gradient-to-r from-primary/10 to-accent/10">
-          <div className="container text-center">
+          <WaitlistForm/>
+          {/* <div className="container text-center">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
               Ready to Transform Your Content Strategy?
             </h2>
@@ -230,7 +232,7 @@ export default function FeaturesPage() {
                 </Button>
               </Link>
             </div>
-          </div>
+          </div> */}
         </section>
       </main>
       <LandingFooter />

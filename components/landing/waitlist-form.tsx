@@ -23,7 +23,7 @@ export function WaitlistForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!email) {
       toast({
         title: "Email required",
@@ -34,16 +34,41 @@ export function WaitlistForm() {
     }
 
     setIsSubmitting(true)
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsSubmitted(true)
+        toast({
+          title: "Welcome to the waitlist! 🎉",
+          description: data.message || "You'll be among the first to access TotalScope AI when we launch.",
+        })
+      } else {
+        toast({
+          title: "Subscription failed",
+          description: data.message || "Something went wrong. Please try again.",
+          variant: "destructive"
+        })
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
       toast({
-        title: "Welcome to the waitlist! 🎉",
-        description: "You'll be among the first to access TotalScope AI when we launch.",
+        title: "An error occurred",
+        description: "Failed to subscribe. Please try again later.",
+        variant: "destructive"
       })
-    }, 1500)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
@@ -129,14 +154,14 @@ export function WaitlistForm() {
                       placeholder="Enter your email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-12 text-base flex-1 px-4 py-3 border-none focus:outline-none"
+                      className="h-12 px-8 text-base flex-1 py-3 border-none focus:outline-none"
                       disabled={isSubmitting}
                       required
                     />
                   </div>
                   <Button
                     type="submit"
-                    size="lg"
+                    size="sm"
                     className="h-12 px-8 rounded-lg text-base font-semibold shadow-none border-none bg-gradient-to-r text-white from-primary to-accent hover:from-primary/90 hover:to-accent/90"
                     disabled={isSubmitting}
                   >

@@ -44,9 +44,9 @@ export function LandingNavbar() {
           <Link href="/features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Features
           </Link>
-          <Link href="/pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          {/* <Link href="#" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Pricing
-          </Link>
+          </Link> */}
           <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             About
           </Link>
@@ -54,15 +54,15 @@ export function LandingNavbar() {
         
         <div className="hidden md:flex items-center gap-4">
           <ModeToggle />
-          <Link href="/dashboard">
+          {/* <Link href="/dashboard">
             <Button variant="ghost" className="gap-2">
               <CircleUser className="h-4 w-4" />
               Dashboard
             </Button>
-          </Link>
-          <Link href="/auth">
+          </Link> */}
+          <Link href="#">
                   <Button variant="default" className="bg-gradient-to-r text-white from-primary to-accent hover:from-primary/90 hover:to-accent/90">
-              Get Started
+              Join the Waitlist
             </Button>
           </Link>
         </div>
