@@ -104,7 +104,7 @@ export function LandingHero() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Link href="/auth">
+            <Link href="#">
               <Button size="lg" className="relative group bg-gradient-to-r text-white from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                 Join the Waitlist
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

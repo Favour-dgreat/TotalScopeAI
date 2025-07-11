@@ -13,7 +13,7 @@ export function LandingFooter() {
               </span>
             </Link>
             <p className="text-muted-foreground max-w-md mb-4">
-              TotalScope AI is an AI-powered content generation platform for crypto and Web3 projects. Tweets, threads, community posts, and more, a product of <a href='www.totalscope.agency' style={{textDecoration: 'underline'}}>Total Scope Agency</a>
+              TotalScope AI is an AI-powered content generation platform for crypto and Web3 projects. Tweets, threads, community posts, and more, a product of <a href='https://www.totalscope.agency/' style={{textDecoration: 'underline'}}>Total Scope Agency</a>
             </p>
             <div className="flex space-x-4">
               <Link 

@@ -99,7 +99,7 @@ export function WaitlistForm() {
                     className="bg-gradient-to-r text-white from-primary to-accent hover:from-primary/90 hover:to-accent/90"
                    
                   >
-                    <a href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20waitlist%20for%20TotalScope%20AI%20-%20the%20future%20of%20Web3%20content%20creation!%20%F0%9F%9A%80" target="_blank" rel="noopener noreferrer">
+                    <a href="https://twitter.com/intent/tweet?text=Just%20joined%20the%20waitlist%20for%20TotalScope%20AI%20-%20the%20future%20of%20Web3%20content%20creation!%20%F0%9F%9A%80 @TotalScope_&url=https://totalscopeai.totalscope.agency/" target="_blank" rel="noopener noreferrer">
                       Share on Twitter
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </a>
